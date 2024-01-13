@@ -1,24 +1,54 @@
-import logo from './logo.svg';
-import './App.css';
+import { useState, useEffect } from "react"
+import "./Components/styles.css"
+import Look from "./Components/lookingAt.js"
+import Data from "./Components/Data"
+import Card from "./Components/Card"
 
 function App() {
+
+  
+
+  const getFilteredItems = (query, items) => {
+    if (!query) {
+      return items
+    }
+    return items.filter(person => person.name.includes(query))
+  }
+
+
+  const [query, setQuery] = useState("")
+
+  const filteredItems = getFilteredItems(query, Data)
+
+  useEffect(() =>{
+    console.log(query)
+  }, [filteredItems])
+
+
+  const charCards = filteredItems.map((data) =>{
+    return(
+    <Card
+      props={data}
+    ></Card>
+
+    )
+  })
+  
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <div className='lookinAt'>
+          <h1 className='text2'>LOOKISM</h1>
+        <div className="searchbar">
+          <h3 className='text'>You are looking at:</h3>
+          <input type="text" onChange={(e)=>setQuery(e.target.value)}></input>
+        </div>
+      </div>
+
+      <div className="grid">{charCards}</div>
     </div>
+
   );
 }
 
